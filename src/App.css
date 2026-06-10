@@ -1,0 +1,41 @@
+.pagination {
+  margin: 20px 0;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  overflow-x: scroll;
+  bottom: 0;
+  left: 50%;
+  background-color: #e8e9ea;
+  width: 100%;
+}
+
+.pagination button {
+  margin: 0 5px;
+  padding: 0;
+  cursor: pointer;
+  border: 1px solid #ddd;
+}
+
+.pagination button.active {
+  background-color: #003399;
+  color: white;
+}
+
+.employee-wrapper .details span {
+  font-weight: 700
+}
+
+.employee-wrapper img {
+  max-width: 150px;
+}
+
+.App a {
+  color: #0047d4;
+  text-decoration: underline;
+}
+
+.App a:hover {
+  color: #007bff;
+  text-decoration: none;
+}
