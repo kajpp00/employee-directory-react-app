@@ -42,8 +42,8 @@ function App() {
       .includes(debouncedFirstNameQuery.toLowerCase());
     const matchesDepartment = debouncedDepartmentFilter
       ? employee.department
-          ?.toLowerCase()
-          .includes(debouncedDepartmentFilter.toLowerCase())
+        ?.toLowerCase()
+        .includes(debouncedDepartmentFilter.toLowerCase())
       : true;
 
     return matchesLastName && matchesFirstName && matchesDepartment;
@@ -198,13 +198,13 @@ function App() {
                 </h2>
               </div>
             ) : (
-              currentEmployees.map((employee,index) => (
+              currentEmployees.map((employee, index) => (
                 <motion.div
                   key={employee._id}
                   className="col-12 my-2 p-3"
-                  initial={{ opacity: 0, y: 10,x: 10 }}
-                  animate={{ opacity: 1, y: 0, x: 0}}
-                  exit={{ opacity: 0, y: -10, x: -10}}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
                   transition={{
                     delay: index * 0.05,
                   }}
@@ -263,7 +263,7 @@ function App() {
                         </p>
 
                         {employee.department ===
-                        employee.division_description ? (
+                          employee.division_description ? (
                           <p>
                             <strong>Organization: </strong>{" "}
                             {employee.division_description}
