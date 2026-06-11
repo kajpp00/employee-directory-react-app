@@ -190,7 +190,7 @@ function App() {
 
         {/* Employee List */}
         <div className="row employee-wrapper">
-          <AnimatePresence mode="popLayout">
+          <AnimatePresence mode="wait">
             {currentEmployees.length === 0 ? (
               <div className="col-12 my-2 p-3 rounded">
                 <h2 role="alert">
@@ -206,7 +206,7 @@ function App() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{
-                    delay: index * 0.05,
+                    delay: index * 0.03,
                   }}
                 >
                   <div className="row">
@@ -225,7 +225,7 @@ function App() {
                         }
                       />
                     </div>
-                    <div className="col-8">
+                    <div className="col-md-8 ">
                       <h2 className="h4">
                         {employee.last_name}
                         {employee.suffix ? ` ${employee.suffix}, ` : ","}{" "}
