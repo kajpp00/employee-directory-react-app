@@ -89,6 +89,23 @@ function App() {
     ),
   ].sort((a, b) => a.localeCompare(b));
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const departmentParam = params.get("department");
+
+    if (departmentParam && departments.length > 0) {
+      const matchingDepartment = departments.find(
+        (department) =>
+          department.toLowerCase() === departmentParam.toLowerCase()
+      );
+
+      if (matchingDepartment) {
+        setDepartmentFilter(matchingDepartment);
+        setCurrentPage(1);
+      }
+    }
+  }, [departments]);
+
   // Function to reset all filters
   const resetFilters = () => {
     setLastNameQuery("");
