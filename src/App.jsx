@@ -11,22 +11,49 @@ function App() {
   const [lastNameQuery, setLastNameQuery] = useState("");
   const [firstNameQuery, setFirstNameQuery] = useState("");
   const [departmentFilter, setDepartmentFilter] = useState("");
-  const [employeesPerPage] = useState(20); // Number of employees to display per page
-  const [currentPage, setCurrentPage] = useState(1); // Current page for pagination
-  const [debouncedLastNameQuery, setDebouncedLastNameQuery] =
-    useState(lastNameQuery);
-  const [debouncedFirstNameQuery, setDebouncedFirstNameQuery] =
-    useState(firstNameQuery);
-  const [debouncedDepartmentFilter, setDebouncedDepartmentFilter] =
-    useState(departmentFilter);
+  const [departmentInitialized, setDepartmentInitialized] = useState(false);
+  const [employeesPerPage] = useState(20);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [debouncedLastNameQuery, setDebouncedLastNameQuery] = useState(lastNameQuery);
+  const [debouncedFirstNameQuery, setDebouncedFirstNameQuery] = useState(firstNameQuery);
+  const [debouncedDepartmentFilter, setDebouncedDepartmentFilter] = useState(departmentFilter);
 
-  // Function to load CSV data and parse it
+
+  useEffect(() => {
+    loadEmployees();
+  }, []);
+
   const loadEmployees = () => {
     Papa.parse(employeeCSV, {
       download: true,
       header: true,
       complete: function (results) {
-        setEmployees(results.data);
+        const employeeData = results.data;
+
+        setEmployees(employeeData);
+
+        const params = new URLSearchParams(window.location.search);
+        const departmentParam = params.get("department");
+
+        if (departmentParam) {
+          const matchingDepartment = [
+            ...new Set(
+              employeeData
+                .map((employee) => employee.department)
+                .filter(Boolean)
+            ),
+          ].find(
+            (department) =>
+              department.toLowerCase() ===
+              departmentParam.toLowerCase()
+          );
+
+          if (matchingDepartment) {
+            setDepartmentFilter(matchingDepartment);
+          }
+        }
+
+        setDepartmentInitialized(true);
       },
     });
   };
@@ -66,10 +93,7 @@ function App() {
     pageNumbers.push(i);
   }
 
-  // Load employees data on component mount
-  useEffect(() => {
-    loadEmployees();
-  }, []);
+
 
   // Handle debouncing of the search inputs
   useEffect(() => {
@@ -88,23 +112,6 @@ function App() {
       employees.map((employee) => employee.department).filter(Boolean),
     ),
   ].sort((a, b) => a.localeCompare(b));
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const departmentParam = params.get("department");
-
-    if (departmentParam && departments.length > 0) {
-      const matchingDepartment = departments.find(
-        (department) =>
-          department.toLowerCase() === departmentParam.toLowerCase()
-      );
-
-      if (matchingDepartment) {
-        setDepartmentFilter(matchingDepartment);
-        setCurrentPage(1);
-      }
-    }
-  }, [departments]);
 
   // Function to reset all filters
   const resetFilters = () => {
@@ -208,14 +215,18 @@ function App() {
         {/* Employee List */}
         <div className="row employee-wrapper">
           <AnimatePresence mode="wait">
-            {currentEmployees.length === 0 ? (
+            {!departmentInitialized ? (
+              <div className="col-12 text-center py-4">
+                <p>Loading directory...</p>
+              </div>
+            ) : currentEmployees.length === 0 ? (
               <div className="col-12 my-2 p-3 rounded">
                 <h2 role="alert">
                   No results found! Try adjusting your search criteria.
                 </h2>
               </div>
             ) : (
-              currentEmployees.map((employee, index) => (
+              currentEmployees.map((employee) => (
                 <motion.div
                   key={employee._id}
                   className="col-12 my-2 p-3"
