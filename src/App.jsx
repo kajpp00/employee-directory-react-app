@@ -287,6 +287,17 @@ function App() {
                           <strong>Title: </strong> {employee?.position || "N/A"}
                         </p>
 
+                        {employee?.cv ? (
+                          <p>
+                            <a href={employee.cv} aria-label={`${employee.first_name} ${employee.last_name} curriculum vitae`}>curriculum vitae</a>
+                          </p>
+                        ) :
+                        (
+                          ""
+                        )
+                        
+                        }
+
                         {employee.department ===
                           employee.division_description ? (
                           <p>
