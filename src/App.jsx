@@ -18,7 +18,6 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1);
   const [debouncedLastNameQuery, setDebouncedLastNameQuery] = useState(lastNameQuery);
   const [debouncedFirstNameQuery, setDebouncedFirstNameQuery] = useState(firstNameQuery);
-  const [debouncedDepartmentFilter, setDebouncedDepartmentFilter] = useState(departmentFilter);
 
 
   useEffect(() => {
@@ -69,10 +68,10 @@ function App() {
     const matchesFirstName = employee.first_name
       .toLowerCase()
       .includes(debouncedFirstNameQuery.toLowerCase());
-    const matchesDepartment = debouncedDepartmentFilter
+    const matchesDepartment = departmentFilter
       ? employee.department
         ?.toLowerCase()
-        .includes(debouncedDepartmentFilter.toLowerCase())
+        .includes(departmentFilter.toLowerCase())
       : true;
 
     const employeeType = employee.employee_type?.toLowerCase();
@@ -109,11 +108,11 @@ function App() {
     const timer = setTimeout(() => {
       setDebouncedLastNameQuery(lastNameQuery);
       setDebouncedFirstNameQuery(firstNameQuery);
-      setDebouncedDepartmentFilter(departmentFilter);
+      // setDebouncedDepartmentFilter(departmentFilter);
     }, 500); // Debounce delay (500ms)
 
     return () => clearTimeout(timer); // Cleanup timer on change
-  }, [lastNameQuery, firstNameQuery, departmentFilter]);
+  }, [lastNameQuery, firstNameQuery]);
 
   // Get unique department names and sort them
   const departments = [
