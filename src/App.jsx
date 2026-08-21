@@ -12,6 +12,8 @@ function App() {
   const [firstNameQuery, setFirstNameQuery] = useState("");
   const [departmentFilter, setDepartmentFilter] = useState("");
   const [departmentInitialized, setDepartmentInitialized] = useState(false);
+  const [facultyFilter, setFacultyFilter] = useState(true);
+  const [staffFilter, setStaffFilter] = useState(true);
   const [employeesPerPage] = useState(20);
   const [currentPage, setCurrentPage] = useState(1);
   const [debouncedLastNameQuery, setDebouncedLastNameQuery] = useState(lastNameQuery);
@@ -73,7 +75,14 @@ function App() {
         .includes(debouncedDepartmentFilter.toLowerCase())
       : true;
 
-    return matchesLastName && matchesFirstName && matchesDepartment;
+    const employeeType = employee.employee_type?.toLowerCase();
+
+    const matchesEmployeeType =
+      (facultyFilter && employeeType === "faculty") ||
+      (staffFilter && employeeType === "staff");
+
+
+    return matchesLastName && matchesFirstName && matchesDepartment && matchesEmployeeType;
   });
 
   const indexOfLastEmployee = currentPage * employeesPerPage;
@@ -118,6 +127,8 @@ function App() {
     setLastNameQuery("");
     setFirstNameQuery("");
     setDepartmentFilter("");
+    setFacultyFilter(true);
+    setStaffFilter(true);
     setCurrentPage(1); // Reset to first page
   };
 
@@ -146,7 +157,7 @@ function App() {
         <div className="row">
           <div className="col-md-6">
             {/* First Name Input */}
-            <label htmlFor="firstNameSearch">First Name</label>
+            <label htmlFor="firstNameSearch" className="font-weight-bold">First Name</label>
             <input
               id="firstNameSearch"
               type="text"
@@ -162,7 +173,7 @@ function App() {
 
           <div className="col-md-6">
             {/* Last Name Input */}
-            <label htmlFor="lastNameSearch">Last Name</label>
+            <label htmlFor="lastNameSearch" className="font-weight-bold">Last Name</label>
             <input
               id="lastNameSearch"
               type="text"
@@ -178,7 +189,7 @@ function App() {
         </div>
 
         {/* Department Dropdown */}
-        <label htmlFor="departmentSelect">Department</label>
+        <label htmlFor="departmentSelect" className="font-weight-bold">Department</label>
         <select
           id="departmentSelect"
           className="form-control mb-3"
@@ -195,6 +206,55 @@ function App() {
             </option>
           ))}
         </select>
+
+        {/* Employee Type */}
+        <div className="filter-section mb-4">
+          <p className="mb-3 font-weight-bold">Employee Type</p>
+
+          <div className="d-flex flex-wrap">
+
+            <div className="custom-control custom-checkbox mr-4">
+              <input
+                type="checkbox"
+                className="custom-control-input"
+                id="facultyFilter"
+                checked={facultyFilter}
+                onChange={(e) => {
+                  setFacultyFilter(e.target.checked);
+                  setCurrentPage(1);
+                }}
+              />
+
+              <label
+                className="custom-control-label"
+                htmlFor="facultyFilter"
+              >
+                Faculty
+              </label>
+            </div>
+
+            <div className="custom-control custom-checkbox">
+              <input
+                type="checkbox"
+                className="custom-control-input"
+                id="staffFilter"
+                checked={staffFilter}
+                onChange={(e) => {
+                  setStaffFilter(e.target.checked);
+                  setCurrentPage(1);
+                }}
+              />
+
+              <label
+                className="custom-control-label"
+                htmlFor="staffFilter"
+              >
+                Staff
+              </label>
+            </div>
+
+          </div>
+        </div>
 
         {/* Filters & Result Count */}
         <div className="row justify-content-end align-content-center">
