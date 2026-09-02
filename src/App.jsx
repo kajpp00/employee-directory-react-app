@@ -155,6 +155,7 @@ function App() {
       <div className="App container py-5">
         <h1 className="my-4">Campus Directory</h1>
         <p>Search faculty and staff across Texas A&M University-Kingsville</p>
+        <p>To view faculty Curriculum Vitae visit <a href="https://tamuk.simplesyllabus.com/">Course Syllabi website</a></p>
         {/* <p>
           To update your contact information in the directory, you will need to
           log in to Workday. In order for the changes to be reflected in the
@@ -438,7 +439,7 @@ function App() {
                             </div>
                           )}
 
-                          {employee.cv && (
+                          {/* {employee.cv && (
                             <div className="col-md-auto col-12 mb-1">
                               <a
                                 href={employee.cv}
@@ -447,7 +448,7 @@ function App() {
                                 Curriculum Vitae
                               </a>
                             </div>
-                          )}
+                          )} */}
 
                         </div>
                       </div>
