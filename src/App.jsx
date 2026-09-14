@@ -412,6 +412,8 @@ function App() {
                               <dl className="mb-0">
                                 <dt className="sr-only">Phone</dt>
                                 <dd className="mb-0">
+                                  <i aria-hidden="true" className="fas fa-phone"></i>
+                                  &nbsp;
                                   <a
                                     href={`tel:${employee.phone}`}
                                     aria-label={`Call ${employee.phone}`}
@@ -428,6 +430,8 @@ function App() {
                               <dl className="mb-0">
                                 <dt className="sr-only">Email</dt>
                                 <dd className="mb-0">
+                                <i aria-hidden="true" className="fas fa-envelope"></i>
+                                &nbsp;
                                   <a
                                     href={`mailto:${employee.email}`}
                                     aria-label={`Email ${employee.email}`}
