@@ -362,7 +362,7 @@ function App() {
                       {showImages && (
                         <div className="col-auto">
                           <img
-                            className="employee-photo img-fluid shadow-sm"
+                            className="employee-photo img-fluid shadow-sm mb-3"
                             src={
                               employee.photo_url
                                 ? employee.photo_url
