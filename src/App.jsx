@@ -10,6 +10,7 @@ function App() {
   const [employees, setEmployees] = useState([]);
   const [lastNameQuery, setLastNameQuery] = useState("");
   const [firstNameQuery, setFirstNameQuery] = useState("");
+  const [phoneNumberQuery, setPhoneNumberQuery] = useState("");
   const [departmentFilter, setDepartmentFilter] = useState("");
   const [departmentInitialized, setDepartmentInitialized] = useState(false);
   const [facultyFilter, setFacultyFilter] = useState(true);
@@ -20,6 +21,7 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1);
   const [debouncedLastNameQuery, setDebouncedLastNameQuery] = useState(lastNameQuery);
   const [debouncedFirstNameQuery, setDebouncedFirstNameQuery] = useState(firstNameQuery);
+  const [debouncedPhoneNumberQuery, setDebouncedPhoneNumberQuery] = useState(firstNameQuery);
 
 
   useEffect(() => {
@@ -78,6 +80,10 @@ function App() {
       .toLowerCase()
       .includes(debouncedFirstNameQuery.toLowerCase());
 
+    const matchesPhoneNumber = employee.phone
+      .toLowerCase()
+      .includes(debouncedPhoneNumberQuery);
+
     const matchesDepartment = departmentFilter
       ? employee.department
         ?.toLowerCase()
@@ -99,7 +105,8 @@ function App() {
       matchesFirstName &&
       matchesDepartment &&
       matchesEmployeeType &&
-      matchesNoImage
+      matchesNoImage &&
+      matchesPhoneNumber
     )
 
   });
@@ -128,10 +135,11 @@ function App() {
     const timer = setTimeout(() => {
       setDebouncedLastNameQuery(lastNameQuery);
       setDebouncedFirstNameQuery(firstNameQuery);
+      setDebouncedPhoneNumberQuery(phoneNumberQuery);
     }, 500); // Debounce delay (500ms)
 
     return () => clearTimeout(timer); // Cleanup timer on change
-  }, [lastNameQuery, firstNameQuery]);
+  }, [lastNameQuery, firstNameQuery, phoneNumberQuery]);
 
   // Get unique department names and sort them
   const departments = [
@@ -178,8 +186,7 @@ function App() {
 
           {/* Search */}
           <div className="filter-section">
-            <h2 className="h5 mb-3">Search</h2>
-
+            <h2 className="h5 mb-3">Search Filters</h2>
             <div className="row mb-3">
               <div className="col-md-4 mb-3 mb-md-0">
                 <label htmlFor="firstNameSearch">
@@ -216,6 +223,26 @@ function App() {
                   }}
                 />
               </div>
+              <div className="col-md-4 mb-3 mb-md-0">
+                <label htmlFor="phoneNumberSearch">
+                  Phone Number
+                </label>
+
+                <input
+                  id="phoneNumberSearch"
+                  type="text"
+                  className="form-control"
+                  placeholder="Enter Phone Number"
+                  value={phoneNumberQuery}
+                  onChange={(e) => {
+                    setPhoneNumberQuery(e.target.value)
+                    setCurrentPage(1);
+                  }}
+                />
+              </div>
+              
+            </div>
+            <div className="row">
               <div className="col-md-4">
 
                 <label htmlFor="departmentSelect">
@@ -240,8 +267,6 @@ function App() {
                   ))}
                 </select>
               </div>
-            </div>
-            <div className="row">
               <div className="col-auto mb-3 mr-4">
                 <fieldset>
                   <legend>Employee Type</legend>
@@ -312,6 +337,7 @@ function App() {
                   </div>
                 </fieldset>
               </div>
+              
             </div>
           </div>
 
@@ -430,8 +456,8 @@ function App() {
                               <dl className="mb-0">
                                 <dt className="sr-only">Email</dt>
                                 <dd className="mb-0">
-                                <i aria-hidden="true" className="fas fa-envelope"></i>
-                                &nbsp;
+                                  <i aria-hidden="true" className="fas fa-envelope"></i>
+                                  &nbsp;
                                   <a
                                     href={`mailto:${employee.email}`}
                                     aria-label={`Email ${employee.email}`}
